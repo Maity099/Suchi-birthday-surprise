@@ -108,7 +108,9 @@ button {
 
   <!-- MAIN CONTENT -->
   <div id="mainContent" class="hidden">
-    <h1 class="fade">🎉 Happy Birthday ❤️</h1>
+    <h1 id="birthdayTitle" class="fade" style="display: none;">
+  🎉 Happy Birthday ❤️
+</h1>
 
     <div id="typedText"></div>
 
@@ -174,6 +176,9 @@ function startTyping() {
 
     i++;
     setTimeout(startTyping, 35);
+  } else {
+    // 🎉 Show Happy Birthday after typing ends
+    document.getElementById("birthdayTitle").style.display = "block";
   }
 }
 
