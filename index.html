@@ -109,7 +109,7 @@ button {
     <button onclick="playMusic()">Play Song 🎵</button>
 
     <!-- 🎂 Auto Birthday Song -->
-    <audio id="birthdayMusic" src="The_Weight_of_Half_a_Room.mp3" loop></audio>
+    <audio id="birthdayMusic" src="birthday.mp3" loop preload="auto"></audio>
 
     <!-- 🎵 Your Song -->
     <audio id="music" src="The_Weight_of_Half_a_Room.mp3"></audio>
@@ -137,9 +137,13 @@ function updateCountdown() {
 
     startTyping();
 
-    // 🎂 Try autoplay birthday music
+    // 🎂 AUTO PLAY (browser-safe)
     const bday = document.getElementById("birthdayMusic");
-    bday.play().catch(() => {
+    bday.muted = true;
+
+    bday.play().then(() => {
+      bday.muted = false;
+    }).catch(() => {
       console.log("Autoplay blocked");
     });
 
@@ -156,7 +160,7 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 
 // 💖 MESSAGE
-const message = `Today is your's day — enjoy it to the fullest 💖
+const message = `Today is your day — enjoy it to the fullest 💖
 
 Always believe in yourself and follow your heart,
 because the way you are is what makes you truly special ❤️
@@ -168,7 +172,7 @@ Happy Birthday to you ❤️`;
 
 let i = 0;
 
-// 💖 TYPING
+// 💖 TYPING EFFECT
 function startTyping() {
   if (i < message.length) {
     let char = message.charAt(i);
@@ -195,7 +199,7 @@ function playMusic() {
   music.play();
 }
 
-// 🔓 Autoplay fallback (first tap)
+// 🔓 FALLBACK (if autoplay blocked)
 document.body.addEventListener("click", () => {
   document.getElementById("birthdayMusic").play();
 }, { once: true });
