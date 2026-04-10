@@ -6,9 +6,7 @@
 <title>For You ❤️</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -22,7 +20,6 @@ body {
   text-align: center;
 }
 
-/* container card */
 .container {
   width: 90%;
   max-width: 400px;
@@ -33,10 +30,7 @@ body {
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-/* hidden sections */
-.hidden {
-  display: none;
-}
+.hidden { display: none; }
 
 h1 {
   font-size: 1.8em;
@@ -48,21 +42,18 @@ p {
   line-height: 1.5;
 }
 
-/* countdown */
 #countdown {
   font-size: 1.5em;
   margin-top: 15px;
   font-weight: bold;
 }
 
-/* typing */
 #typedText {
   margin-top: 15px;
   font-size: 1.1em;
   min-height: 60px;
 }
 
-/* image */
 img {
   width: 100%;
   max-width: 250px;
@@ -70,7 +61,6 @@ img {
   margin-top: 15px;
 }
 
-/* button */
 button {
   margin-top: 20px;
   padding: 12px;
@@ -83,7 +73,6 @@ button {
   font-weight: bold;
 }
 
-/* small animation */
 .fade {
   animation: fadeIn 1s ease-in-out;
 }
@@ -108,9 +97,10 @@ button {
 
   <!-- MAIN CONTENT -->
   <div id="mainContent" class="hidden">
+
     <h1 id="birthdayTitle" class="fade" style="display: none;">
-  🎉 Happy Birthday ❤️
-</h1>
+      🎉 Happy Birthday ❤️
+    </h1>
 
     <div id="typedText"></div>
 
@@ -118,7 +108,12 @@ button {
 
     <button onclick="playMusic()">Play Song 🎵</button>
 
+    <!-- 🎂 Auto Birthday Song -->
+    <audio id="birthdayMusic" src="birthday.mp3" loop></audio>
+
+    <!-- 🎵 Your Song -->
     <audio id="music" src="The_Weight_of_Half_a_Room.mp3"></audio>
+
   </div>
 
 </div>
@@ -139,7 +134,15 @@ function updateCountdown() {
   if (diff <= 0) {
     lockScreen.style.display = "none";
     mainContent.classList.remove("hidden");
+
     startTyping();
+
+    // 🎂 Try autoplay birthday music
+    const bday = document.getElementById("birthdayMusic");
+    bday.play().catch(() => {
+      console.log("Autoplay blocked");
+    });
+
     return;
   }
 
@@ -152,7 +155,7 @@ function updateCountdown() {
 
 setInterval(updateCountdown, 1000);
 
-// 💖 TYPING EFFECT
+// 💖 MESSAGE
 const message = `Today is your day — enjoy it to the fullest 💖
 
 Always believe in yourself and follow your heart,
@@ -162,8 +165,10 @@ You are one of the most beautiful people in this world — truly.
 
 Many, many congratulations on your special day ✨  
 Happy Birthday to you ❤️`;
+
 let i = 0;
 
+// 💖 TYPING
 function startTyping() {
   if (i < message.length) {
     let char = message.charAt(i);
@@ -177,15 +182,24 @@ function startTyping() {
     i++;
     setTimeout(startTyping, 150);
   } else {
-    // 🎉 Show Happy Birthday after typing ends
     document.getElementById("birthdayTitle").style.display = "block";
   }
 }
 
-// 🎵 MUSIC
+// 🎵 BUTTON MUSIC
 function playMusic() {
-  document.getElementById("music").play();
+  const bday = document.getElementById("birthdayMusic");
+  const music = document.getElementById("music");
+
+  bday.pause();
+  music.play();
 }
+
+// 🔓 Autoplay fallback (first tap)
+document.body.addEventListener("click", () => {
+  document.getElementById("birthdayMusic").play();
+}, { once: true });
+
 </script>
 
 </body>
