@@ -175,7 +175,7 @@ function startTyping() {
     }
 
     i++;
-    setTimeout(startTyping, 35);
+    setTimeout(startTyping, 50 + Math.random() * 50);
   } else {
     // 🎉 Show Happy Birthday after typing ends
     document.getElementById("birthdayTitle").style.display = "block";
