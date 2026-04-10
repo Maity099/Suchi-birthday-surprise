@@ -151,14 +151,29 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 
 // 💖 TYPING EFFECT
-const message = "You are the most special person in my life ❤️ I hope this day brings you endless happiness 😊";
+const message = `Today is your day — enjoy it to the fullest 💖
+
+Always believe in yourself and follow your heart,
+because the way you are is what makes you truly special ❤️
+
+You are one of the most beautiful people in this world — truly.
+
+Many, many congratulations on your special day ✨  
+Happy Birthday to you ❤️`;
 let i = 0;
 
 function startTyping() {
   if (i < message.length) {
-    document.getElementById("typedText").innerHTML += message.charAt(i);
+    let char = message.charAt(i);
+
+    if (char === "\n") {
+      document.getElementById("typedText").innerHTML += "<br>";
+    } else {
+      document.getElementById("typedText").innerHTML += char;
+    }
+
     i++;
-    setTimeout(startTyping, 40);
+    setTimeout(startTyping, 35);
   }
 }
 
