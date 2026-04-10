@@ -3,119 +3,143 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Something Special 🎁</title>
+<title>For You ❤️</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-  color: white;
-  overflow: hidden;
+* {
+  box-sizing: border-box;
 }
 
-/* sections */
-#lockScreen, #mainContent {
-  display: none;
-  height: 100vh;
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  color: white;
+  display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  padding: 20px;
+  height: 100vh;
+  text-align: center;
+}
+
+/* container card */
+.container {
+  width: 90%;
+  max-width: 400px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 25px 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* hidden sections */
+.hidden {
+  display: none;
 }
 
 h1 {
-  font-size: 2.5em;
-}
-
-#countdown {
   font-size: 1.8em;
-  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
-/* typing text */
-#typedText {
-  font-size: 1.3em;
+p {
+  font-size: 1em;
+  line-height: 1.5;
+}
+
+/* countdown */
+#countdown {
+  font-size: 1.5em;
   margin-top: 15px;
-  max-width: 90%;
+  font-weight: bold;
+}
+
+/* typing */
+#typedText {
+  margin-top: 15px;
+  font-size: 1.1em;
+  min-height: 60px;
 }
 
 /* image */
 img {
-  width: 80%;
-  max-width: 280px;
-  border-radius: 20px;
-  margin-top: 20px;
+  width: 100%;
+  max-width: 250px;
+  border-radius: 15px;
+  margin-top: 15px;
 }
 
 /* button */
 button {
-  padding: 12px 22px;
-  font-size: 16px;
   margin-top: 20px;
+  padding: 12px;
+  width: 100%;
   border: none;
-  border-radius: 20px;
+  border-radius: 12px;
   background: white;
-  color: #ff5e78;
-  cursor: pointer;
+  color: #ff4d6d;
+  font-size: 16px;
+  font-weight: bold;
 }
 
-/* fireworks canvas */
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
+/* small animation */
+.fade {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="fireworks"></canvas>
+<div class="container">
 
-<!-- LOCK SCREEN -->
-<div id="lockScreen">
-  <h1>⏳ Wait for it...</h1>
-  <p>This surprise unlocks at midnight 💖</p>
-  <div id="countdown"></div>
-</div>
+  <!-- LOCK SCREEN -->
+  <div id="lockScreen">
+    <h1>⏳ Wait for it...</h1>
+    <p>This surprise unlocks soon 💖</p>
+    <div id="countdown"></div>
+  </div>
 
-<!-- MAIN CONTENT -->
-<div id="mainContent">
-  <h1>🎉 Happy Birthday ❤️</h1>
+  <!-- MAIN CONTENT -->
+  <div id="mainContent" class="hidden">
+    <h1 class="fade">🎉 Happy Birthday ❤️</h1>
 
-  <div id="typedText"></div>
+    <div id="typedText"></div>
 
-  <img src="Screenshot.png" alt="Her Image">
+    <img src="Screenshot.png" class="fade">
 
-  <button onclick="playMusic()">Play Song 🎵</button>
+    <button onclick="playMusic()">Play Song 🎵</button>
 
-  <audio id="music" src="The_Weight_of_Half_a_Room.mp3"></audio>
+    <audio id="music" src="The_Weight_of_Half_a_Room.mp3"></audio>
+  </div>
+
 </div>
 
 <script>
 // 🎯 SET DATE (IST SAFE)
-const targetDate = new Date("2026-04-10T15:50:00+05:30");
+const targetDate = new Date("2026-04-10T14:20:00+05:30");
 
 const lockScreen = document.getElementById("lockScreen");
 const mainContent = document.getElementById("mainContent");
 const countdown = document.getElementById("countdown");
 
-// COUNTDOWN FUNCTION
+// COUNTDOWN
 function updateCountdown() {
   const now = new Date();
   const diff = targetDate - now;
 
   if (diff <= 0) {
     lockScreen.style.display = "none";
-    mainContent.style.display = "flex";
+    mainContent.classList.remove("hidden");
     startTyping();
     return;
   }
-
-  lockScreen.style.display = "flex";
 
   const hours = Math.floor(diff / (1000 * 60 * 60));
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
@@ -142,50 +166,6 @@ function startTyping() {
 function playMusic() {
   document.getElementById("music").play();
 }
-
-// 🎆 FIREWORKS
-const canvas = document.getElementById("fireworks");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particles = [];
-
-function createFirework() {
-  const x = Math.random() * canvas.width;
-  const y = Math.random() * canvas.height / 2;
-
-  for (let i = 0; i < 40; i++) {
-    particles.push({
-      x: x,
-      y: y,
-      dx: (Math.random() - 0.5) * 5,
-      dy: (Math.random() - 0.5) * 5,
-      life: 80
-    });
-  }
-}
-
-function updateFireworks() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  particles.forEach((p, index) => {
-    p.x += p.dx;
-    p.y += p.dy;
-    p.life--;
-
-    ctx.fillStyle = "white";
-    ctx.fillRect(p.x, p.y, 2, 2);
-
-    if (p.life <= 0) particles.splice(index, 1);
-  });
-
-  requestAnimationFrame(updateFireworks);
-}
-
-setInterval(createFirework, 800);
-updateFireworks();
 </script>
 
 </body>
